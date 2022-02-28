@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+/__pycache__/
+*.py[cod]
+*$py.class
+
+**/.idea/
+**/node_modules/
+**/dist/
+**/workspace.xml
+**/.DS_Store
+/venv/
+
+# Docker push scripts
+script/
+
+# Sonarscanner
+/.sonar
+/.scannerwork

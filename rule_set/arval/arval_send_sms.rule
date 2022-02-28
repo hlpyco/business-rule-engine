@@ -1,0 +1,11 @@
+rule "send_sms_arval_accident"
+when
+    AND(business_partner = "arval",
+    event = "call_assistance",
+    car_issue = "INCIDENTE")
+then
+    AND(
+    print("Sending sms for arval for accident"),
+    set_variable("run", "incident")
+    )
+end

@@ -1,0 +1,10 @@
+rule "is_auction_arval"
+when
+    AND(business_partner = "arval",
+    event = "is_auction")
+then
+    AND(
+        print("is_auction"),
+        set_variable("test", "value")
+    )
+end
