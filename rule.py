@@ -4,6 +4,7 @@ import re
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 INDENTATION_PATTERN = re.compile(r"([\t ]+).+")
 
+
 class Rule:
 
     def __repr__(self) -> str:
@@ -51,7 +52,6 @@ class RuleParser:
 
         for line in text.split('\n'):
             ignore_line = False
-            #line = line.strip()  # The split on rule name doesn't work for multi-line w/o
             if line.lower().startswith('rule'):
                 is_condition = False
                 is_action = False

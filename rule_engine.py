@@ -1,6 +1,5 @@
 import os
 import logging
-import traceback
 from rule import Rule, RuleParser
 import re
 
@@ -77,7 +76,6 @@ class RuleEngine:
                 else:
                     logging.info(f"rule [{rule.rule_name}] is excluded")
             except Exception as e:
-                traceback.print_exc()
                 logging.error(e)
 
         return variables
