@@ -3,6 +3,6 @@ when
     business_partner == "arval"
     event == "call_assistance"
 then
-print("Sending sms for arval for garanzie")
-set_variable("var", "value")
+    print("Sending sms for arval for garanzie")
+    set_variable("var", "value")
 end

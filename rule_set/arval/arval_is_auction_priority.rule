@@ -4,10 +4,10 @@ when
     business_partner == "arval"
     event == "is_auction"
 then
-print("is_auction with priority")
-if 1!=1:
-    print("non dovrebbe essere stampato")
-    set_variable("hello", "never")
-exclude("is_auction")
-set_variable("priority", "True")
+    print("is_auction with priority")
+    if 1!=1:
+        print("non dovrebbe essere stampato")
+        set_variable("hello", "never")
+    exclude("is_auction")
+    set_variable("priority", "True")
 end

@@ -33,8 +33,8 @@ class TestBusinessRuleEngineFromFolder(unittest.TestCase):
             'name': "send_sms_arval_accident2",
             'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
             'actions': '''
-print("Rule with priority"),
-set_variable("new", "this")''',
+                print("Rule with priority"),
+                set_variable("new", "this")''',
             'priority': 1
         })
 
@@ -54,9 +54,9 @@ set_variable("new", "this")''',
             'name': "send_sms_arval_accident2",
             'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
             'actions': '''
-print("Rule with priority"),
-exclude("call_assistance"),
-set_variable("only", "this")''',
+                print("Rule with priority"),
+                exclude("call_assistance")
+                set_variable("only", "this")''',
             'priority': 1
         })
         response = self.eng.process({
@@ -72,9 +72,9 @@ set_variable("only", "this")''',
             'name': "send_sms_arval_accident2",
             'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
             'actions': '''
-print("Rule with priority"),
-exclude("send_sms_arval_accident"),
-set_variable("only", "this")''',
+                print("Rule with priority"),
+                exclude("send_sms_arval_accident")
+                set_variable("only", "this")''',
             'priority': 1
         })
 
@@ -87,9 +87,9 @@ set_variable("only", "this")''',
             'name': "send_sms_arval_accident2",
             'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
             'actions': '''
-print("Rule with priority"),
-exclude("send_sms_arval_accident"),
-set_variable("only", "this")''',
+                print("Rule with priority"),
+                exclude("send_sms_arval_accident")
+                set_variable("only", "this")''',
             'priority': 1
         })
         response = self.eng.process({
@@ -103,7 +103,6 @@ set_variable("only", "this")''',
         self.eng.remove_rule("send_sms_arval_accident2")
 
     def testRuleWithPriority(self):
-        #print(self.eng.ordered_rules)
         response = self.eng.process({
             'business_partner': 'arval',
             'event': 'is_auction',

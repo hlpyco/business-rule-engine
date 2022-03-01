@@ -1,7 +1,8 @@
 import logging
+import re
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
-
+INDENTATION_PATTERN = re.compile(r"([\t ]+).+")
 
 class Rule:
 
@@ -13,7 +14,7 @@ class Rule:
     def __init__(self, rule_name: str, conditions=[], actions="", priority=DEFAULT_PRIORITY) -> None:
         self.rule_name: str = rule_name
         self.conditions: list[str] = conditions
-        self.actions: str = actions
+        self.actions: str = RuleParser.normalize_indentation(actions)
         self.priority: int = priority
 
     def check_conditions(self, params: dict, custom_functions={}) -> bool:
@@ -80,7 +81,23 @@ class RuleParser:
                 conditions.append(line.strip())
             if rule_name and is_action and not ignore_line:
                 actions.append(line)
-        string_actions = "\n".join(actions)
+        string_actions = RuleParser.normalize_indentation("\n".join(actions))
         logging.debug(f"Adding rule [{rule_name}] with conditions [{conditions}],"
                       f" actions [\n{string_actions}], priority [{priority}]")
         return Rule(rule_name, conditions, string_actions, priority=priority)
+
+    @staticmethod
+    def normalize_indentation(instructions: str):
+        lines = instructions.split("\n")
+        dedented = []
+        first = True
+        for line in lines:
+            if first:
+                if len(line.strip()) == 0:
+                    continue
+                m = INDENTATION_PATTERN.findall(line)
+                first = False
+            if re.match("[A-Za-z]", line[0]):
+                return instructions
+            dedented.append(line.replace(m[0], "", 1))
+        return "\n".join(dedented)

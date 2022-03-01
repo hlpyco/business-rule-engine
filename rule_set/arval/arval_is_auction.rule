@@ -3,6 +3,6 @@ when
     business_partner == "arval"
     event == "is_auction"
 then
-print("is_auction")
-set_variable("test", "value")
+    print("is_auction")
+    set_variable("test", "value")
 end

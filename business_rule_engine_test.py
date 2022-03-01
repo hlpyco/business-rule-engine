@@ -12,24 +12,24 @@ class TestBusinessRuleEngine(unittest.TestCase):
                 'name': "is_auction_arval",
                 'conditions': ['business_partner == "arval"', 'event == "is_auction"'],
                 'actions': '''
-print("is_auction")
-set_variable("test", "value")''',
+                    print("is_auction")
+                    set_variable("test", "value")''',
                 'priority': 1000
             },
             {
                 'name': "send_sms_arval_garanzia",
                 'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
                 'actions': '''
-print("Sending sms for arval for garanzie")
-set_variable("var", "value")''',
+                    print("Sending sms for arval for garanzie")
+                    set_variable("var", "value")''',
                 'priority': 1000
             },
             {
                 'name': "send_sms_arval_accident",
                 'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
                 'actions': '''
-print("Sending sms for arval for accident")
-set_variable("run", "incident")''',
+                    print("Sending sms for arval for accident")
+                    set_variable("run", "incident")''',
                 'priority': 100
             },
         ]
@@ -60,8 +60,8 @@ set_variable("run", "incident")''',
             'name': "send_sms_arval_accident2",
             'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
             'actions': '''
-print("Rule with priority")
-set_variable("new", "this")''',
+                print("Rule with priority")
+                set_variable("new", "this")''',
             'priority': 1
         })
         response = self.eng.process({
@@ -79,9 +79,9 @@ set_variable("new", "this")''',
             'name': "send_sms_arval_accident2",
             'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
             'actions': '''
-print("Rule with priority"),
-exclude("call_assistance")
-set_variable("only", "this")''',
+                print("Rule with priority"),
+                exclude("call_assistance")
+                set_variable("only", "this")''',
             'priority': 1
         })
         response = self.eng.process({
@@ -97,9 +97,9 @@ set_variable("only", "this")''',
             'name': "send_sms_arval_accident2",
             'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
             'actions': '''
-print("Rule with priority"),
-exclude("send_sms_arval_accident"),
-set_variable("only", "this")''',
+                        print("Rule with priority"),
+                        exclude("send_sms_arval_accident"),
+                        set_variable("only", "this")''',
             'priority': 1
         })
 
@@ -112,9 +112,9 @@ set_variable("only", "this")''',
             'name': "send_sms_arval_accident2",
             'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
             'actions': '''
-print("Rule with priority"),
-exclude("send_sms_arval_accident"),
-set_variable("only", "this")''',
+                          print("Rule with priority")
+                          exclude("send_sms_arval_accident")
+                          set_variable("only", "this")''',
             'priority': 1
         })
         response = self.eng.process({
@@ -133,9 +133,9 @@ set_variable("only", "this")''',
             'name': "send_sms_arval_accident2",
             'conditions': ['business_partner == "arval"', 'event == "is_auction"'],
             'actions': '''
-print("Rule with priority"),
-exclude("is_auction"),
-set_variable("custom_value", custom_f())''',
+                        print("Rule with priority")
+                        exclude("is_auction")
+                        set_variable("custom_value", custom_f())''',
             'priority': 1
         })
 
