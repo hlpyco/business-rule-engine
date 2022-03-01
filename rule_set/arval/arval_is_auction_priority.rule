@@ -1,0 +1,10 @@
+rule "is_auction_arval_priority"
+priority 1
+when
+    business_partner == "arval"
+    event == "is_auction"
+then
+print("is_auction with priority")
+exclude("is_auction")
+set_variable("priority", "True")
+end

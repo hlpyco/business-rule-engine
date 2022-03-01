@@ -1,11 +1,8 @@
 rule "send_sms_arval_garanzia"
 when
-    AND(business_partner = "arval",
-    event = "call_assistance"
-    )
+    business_partner == "arval"
+    event == "call_assistance"
 then
-    AND(
-    print("Sending sms for arval for garanzie"),
-    set_variable("var", "value")
-    )
+print("Sending sms for arval for garanzie")
+set_variable("var", "value")
 end

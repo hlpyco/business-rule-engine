@@ -1,10 +1,8 @@
 rule "is_auction_arval"
 when
-    AND(business_partner = "arval",
-    event = "is_auction")
+    business_partner == "arval"
+    event == "is_auction"
 then
-    AND(
-        print("is_auction"),
-        set_variable("test", "value")
-    )
+print("is_auction")
+set_variable("test", "value")
 end

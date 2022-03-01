@@ -1,9 +1,7 @@
-from business_rule_engine import RuleParser
 import os
 import logging
 import traceback
-from collections import OrderedDict
-from rule import Rule
+from rule import Rule, RuleParser
 import re
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
@@ -113,11 +111,8 @@ class RuleEngine:
         return True
 
     def add_rule_from_string(self, rule):
-        self.parser.parsestr(rule)
-        for key in self.parser.rules:
-            value = self.parser.rules[key]
-            self.add_rule_to_knowledge(value)
-        self.parser.rules = OrderedDict()
+        r = self.parser.parsestr(rule)
+        self.add_rule_to_knowledge(r)
 
     @classmethod
     def register_function(cls, function, function_name: str = None) -> None:
