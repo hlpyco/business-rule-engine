@@ -82,7 +82,7 @@ class RuleEngine:
         def exclude_rule(rule_name):
             excluded_rules.append(rule_name)
 
-        builtin_functions = {
+        return {
             'set_variable': set_variable,
             'get_variable': get_variable,
             'get_context': get_context,
@@ -92,7 +92,6 @@ class RuleEngine:
             'exclusions': exclusions,
             'excluded_rules': excluded_rules
         }
-        return builtin_functions
 
     def add_rules(self, rules):
         for r in rules:
