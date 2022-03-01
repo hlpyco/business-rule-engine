@@ -55,7 +55,7 @@ class TestBusinessRuleEngineFromFolder(unittest.TestCase):
             'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
             'actions': '''
                 print("Rule with priority"),
-                exclude("call_assistance")
+                exclude("event", "call_assistance")
                 set_variable("only", "this")''',
             'priority': 1
         })
@@ -73,7 +73,7 @@ class TestBusinessRuleEngineFromFolder(unittest.TestCase):
             'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
             'actions': '''
                 print("Rule with priority"),
-                exclude("send_sms_arval_accident")
+                exclude_rule("send_sms_arval_accident")
                 set_variable("only", "this")''',
             'priority': 1
         })
@@ -88,7 +88,7 @@ class TestBusinessRuleEngineFromFolder(unittest.TestCase):
             'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
             'actions': '''
                 print("Rule with priority"),
-                exclude("send_sms_arval_accident")
+                exclude_rule("send_sms_arval_accident")
                 set_variable("only", "this")''',
             'priority': 1
         })

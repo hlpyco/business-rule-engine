@@ -22,10 +22,10 @@ class RuleEngine:
 
     @staticmethod
     def is_excluded(rule, exclusions):
-        for exclusion in exclusions:
+        for key, exclusion in exclusions:
             conds = ";".join(rule.conditions)
-            result = re.search(f'event\s*==\s*["|\']{exclusion}["|\']', conds)
-            logging.debug(f'checking [{conds}] wrt [{f"event=={exclusion}"}]. Result [{result}]')
+            result = re.search(f'{key}\s*==\s*["|\']{exclusion}["|\']', conds)
+            logging.debug(f'checking [{conds}] wrt [{f"{key}=={exclusion}"}]. Result [{result}]')
             if result:
                 return True
         return False
@@ -44,7 +44,8 @@ class RuleEngine:
 
     def process(self, params):
         variables = {}
-        exclusions = []
+        exclusions = {}
+        excluded_rules = []
 
         def set_variable(key, value):
             variables[key] = value
@@ -56,21 +57,25 @@ class RuleEngine:
         def get_context():
             return variables
 
-        def exclude(event):
-            exclusions.append(event)
+        def exclude(key, value):
+            exclusions.update({key: value})
+
+        def exclude_rule(rule_name):
+            excluded_rules.append(rule_name)
 
         builtin_functions = {
             'set_variable': set_variable,
             'get_variable': get_variable,
             'get_context': get_context,
             'exclude': exclude,
+            'exclude_rule': exclude_rule,
 
         }
 
         for rule in self.ordered_rules:
             try:
                 logging.debug(f"exclusions: [{exclusions}]")
-                if not self.is_excluded(rule, exclusions) and rule.rule_name not in exclusions:
+                if not self.is_excluded(rule, exclusions) and rule.rule_name not in excluded_rules:
                     result = rule.execute(params, custom_functions={**self.CUSTOM_FUNCTIONS, **builtin_functions})
                     logging.debug(f"result {result}")
                 else:
