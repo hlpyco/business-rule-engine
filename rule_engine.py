@@ -43,6 +43,25 @@ class RuleEngine:
                 self.add_rule_from_string(rule)
 
     def process(self, params):
+
+        builtin_names = self.builtins()
+        exclusions = builtin_names['exclusions']
+        excluded_rules = builtin_names['excluded_rules']
+
+        for rule in self.ordered_rules:
+            try:
+                logging.debug(f"exclusions: [{exclusions}]")
+                if not self.is_excluded(rule, exclusions) and rule.rule_name not in excluded_rules:
+                    result = rule.execute(params, custom_functions={**self.CUSTOM_FUNCTIONS, **builtin_names})
+                    logging.debug(f"result {result}")
+                else:
+                    logging.info(f"rule [{rule.rule_name}] is excluded")
+            except Exception as e:
+                logging.error(e)
+
+        return builtin_names['variables']
+
+    def builtins(self):
         variables = {}
         exclusions = {}
         excluded_rules = []
@@ -69,21 +88,11 @@ class RuleEngine:
             'get_context': get_context,
             'exclude': exclude,
             'exclude_rule': exclude_rule,
-
+            'variables': variables,
+            'exclusions': exclusions,
+            'excluded_rules': excluded_rules
         }
-
-        for rule in self.ordered_rules:
-            try:
-                logging.debug(f"exclusions: [{exclusions}]")
-                if not self.is_excluded(rule, exclusions) and rule.rule_name not in excluded_rules:
-                    result = rule.execute(params, custom_functions={**self.CUSTOM_FUNCTIONS, **builtin_functions})
-                    logging.debug(f"result {result}")
-                else:
-                    logging.info(f"rule [{rule.rule_name}] is excluded")
-            except Exception as e:
-                logging.error(e)
-
-        return variables
+        return builtin_functions
 
     def add_rules(self, rules):
         for r in rules:
