@@ -10,20 +10,26 @@ class TestBusinessRuleEngine(unittest.TestCase):
         rules = [
             {
                 'name': "is_auction_arval",
-                'conditions': ['business_partner = "arval"', 'event = "is_auction"'],
-                'actions': ['print("is_auction")', 'set_variable("test", "value")'],
+                'conditions': ['business_partner == "arval"', 'event == "is_auction"'],
+                'actions': '''
+print("is_auction")
+set_variable("test", "value")''',
                 'priority': 1000
             },
             {
                 'name': "send_sms_arval_garanzia",
-                'conditions': ['business_partner = "arval"', 'event = "call_assistance"'],
-                'actions': ['print("Sending sms for arval for garanzie")', 'set_variable("var", "value")'],
+                'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
+                'actions': '''
+print("Sending sms for arval for garanzie")
+set_variable("var", "value")''',
                 'priority': 1000
             },
             {
                 'name': "send_sms_arval_accident",
-                'conditions': ['business_partner = "arval"', 'event = "call_assistance"'],
-                'actions': ['print("Sending sms for arval for accident")', 'set_variable("run", "incident")'],
+                'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
+                'actions': '''
+print("Sending sms for arval for accident")
+set_variable("run", "incident")''',
                 'priority': 100
             },
         ]
@@ -52,11 +58,10 @@ class TestBusinessRuleEngine(unittest.TestCase):
     def testAddRule(self):
         self.eng.add_rule({
             'name': "send_sms_arval_accident2",
-            'conditions': ['business_partner = "arval"', 'event = "call_assistance"'],
-            'actions': [
-                'print("Rule with priority")',
-                'set_variable("new", "this")'
-            ],
+            'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
+            'actions': '''
+print("Rule with priority")
+set_variable("new", "this")''',
             'priority': 1
         })
         response = self.eng.process({
@@ -72,12 +77,11 @@ class TestBusinessRuleEngine(unittest.TestCase):
     def testExclusion(self):
         self.eng.add_rule({
             'name': "send_sms_arval_accident2",
-            'conditions': ['business_partner = "arval"', 'event = "call_assistance"'],
-            'actions': [''
-                        'print("Rule with priority")',
-                        'exclude("call_assistance")',
-                        'set_variable("only", "this")'
-                        ],
+            'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
+            'actions': '''
+print("Rule with priority"),
+exclude("call_assistance")
+set_variable("only", "this")''',
             'priority': 1
         })
         response = self.eng.process({
@@ -91,12 +95,11 @@ class TestBusinessRuleEngine(unittest.TestCase):
     def testRemoveRule(self):
         self.eng.add_rule({
             'name': "send_sms_arval_accident2",
-            'conditions': ['business_partner = "arval"', 'event = "call_assistance"'],
-            'actions': [''
-                        'print("Rule with priority")',
-                        'exclude("send_sms_arval_accident")',
-                        'set_variable("only", "this")'
-                        ],
+            'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
+            'actions': '''
+print("Rule with priority"),
+exclude("send_sms_arval_accident"),
+set_variable("only", "this")''',
             'priority': 1
         })
 
@@ -104,17 +107,14 @@ class TestBusinessRuleEngine(unittest.TestCase):
         self.assertEqual(len(self.eng.ordered_rules), 3)
 
     def testExclusionByName(self):
-        for r in self.eng.ordered_rules:
-            print(r['rule'].rulename)
 
         self.eng.add_rule({
             'name': "send_sms_arval_accident2",
-            'conditions': ['business_partner = "arval"', 'event = "call_assistance"'],
-            'actions': [''
-                        'print("Rule with priority")',
-                        'exclude("send_sms_arval_accident")',
-                        'set_variable("only", "this")'
-                        ],
+            'conditions': ['business_partner == "arval"', 'event == "call_assistance"'],
+            'actions': '''
+print("Rule with priority"),
+exclude("send_sms_arval_accident"),
+set_variable("only", "this")''',
             'priority': 1
         })
         response = self.eng.process({
@@ -126,3 +126,27 @@ class TestBusinessRuleEngine(unittest.TestCase):
         self.assertEqual(response['var'], 'value')
         self.assertTrue('run' not in response.keys())
         self.eng.remove_rule("send_sms_arval_accident2")
+
+    def testCustomFunction(self):
+
+        self.eng.add_rule({
+            'name': "send_sms_arval_accident2",
+            'conditions': ['business_partner == "arval"', 'event == "is_auction"'],
+            'actions': '''
+print("Rule with priority"),
+exclude("is_auction"),
+set_variable("custom_value", custom_f())''',
+            'priority': 1
+        })
+
+        def custom_f():
+            print("custom_f")
+            return "custom_value"
+
+        self.eng.register_function(custom_f)
+        response = self.eng.process({
+            'business_partner': 'arval',
+            'event': 'is_auction',
+        })
+        self.assertEqual(len(response.keys()), 1)
+        self.assertEqual(response['custom_value'], 'custom_value')
