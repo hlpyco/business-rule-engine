@@ -50,7 +50,7 @@ class RuleParser:
 
         for line in text.split('\n'):
             ignore_line = False
-            line = line.strip()  # The split on rule name doesn't work for multi-line w/o
+            #line = line.strip()  # The split on rule name doesn't work for multi-line w/o
             if line.lower().startswith('rule'):
                 is_condition = False
                 is_action = False
@@ -79,8 +79,8 @@ class RuleParser:
             if rule_name and is_condition and not ignore_line:
                 conditions.append(line.strip())
             if rule_name and is_action and not ignore_line:
-                actions.append(line.strip())
+                actions.append(line)
+        string_actions = "\n".join(actions)
         logging.debug(f"Adding rule [{rule_name}] with conditions [{conditions}],"
-                      f" actions [{actions}], priority [{priority}]")
-
-        return Rule(rule_name, conditions, "\n".join(actions), priority=priority)
+                      f" actions [\n{string_actions}], priority [{priority}]")
+        return Rule(rule_name, conditions, string_actions, priority=priority)
