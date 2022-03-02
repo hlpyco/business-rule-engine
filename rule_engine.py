@@ -62,7 +62,7 @@ class RuleEngine:
         return builtin_names['variables']
 
     @staticmethod
-    def builtins(self):
+    def builtins():
         variables = {}
         exclusions = {}
         excluded_rules = []
