@@ -97,7 +97,7 @@ class RuleParser:
                     continue
                 m = INDENTATION_PATTERN.findall(line)
                 first = False
-            if re.match("[A-Za-z]", line[0]):
-                return instructions
+                if re.match("[A-Za-z]", line[0]):
+                    return instructions
             dedented.append(line.replace(m[0], "", 1))
         return "\n".join(dedented)
