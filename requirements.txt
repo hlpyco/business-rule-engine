@@ -2,8 +2,9 @@
 -e .
 
 # Testing
+pylint
 pytest
 coverage
 
 # Packaging
-twine
+build

@@ -1,5 +1,6 @@
 import logging
 import re
+from typing import List
 
 INDENTATION_PATTERN = re.compile(r"([\t ]+).+")
 
@@ -11,9 +12,9 @@ class Rule:
 
     DEFAULT_PRIORITY = 10000
 
-    def __init__(self, rule_name: str, conditions=[], actions="", priority=DEFAULT_PRIORITY) -> None:
+    def __init__(self, rule_name: str, conditions: List[str] = [], actions="", priority=DEFAULT_PRIORITY) -> None:
         self.rule_name: str = rule_name
-        self.conditions: list[str] = conditions
+        self.conditions: List[str] = conditions
         self.actions: str = RuleParser.normalize_indentation(actions)
         self.priority: int = priority
 
@@ -65,7 +66,7 @@ class RuleParser:
                 is_action = False
             if line.lower().strip().startswith('then'):
                 if is_then:
-                    #TODO change this exception
+                    # TODO change this exception
                     raise Exception('using multiple "then" in one rule is not allowed')
                 is_then = True
                 ignore_line = True

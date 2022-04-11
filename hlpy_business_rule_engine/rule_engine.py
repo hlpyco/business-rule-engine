@@ -1,12 +1,11 @@
-import os
 import logging
-from .rule import Rule, RuleParser
+import os
 import re
 
+from .rule import Rule, RuleParser
 
 
 class RuleEngine:
-
     CUSTOM_FUNCTIONS = {}
 
     def __init__(self):
@@ -133,4 +132,4 @@ class RuleEngine:
     @classmethod
     def unregister_function(cls, function, function_name: str = None) -> None:
         custom_function_name = function_name or function.__name__
-        del(cls.CUSTOM_FUNCTIONS[custom_function_name])
+        del (cls.CUSTOM_FUNCTIONS[custom_function_name])
