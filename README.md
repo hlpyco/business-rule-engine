@@ -8,7 +8,7 @@ pip install hlpy-business-rule-engine
 
 ## Usage
 ```python
-from rule_engine import RuleEngine
+from hlpy_business_rule_engine import RuleEngine
 
 engine = RuleEngine()
 # To load a folder of .rules files use the method 'load_rules_from_folder'
