@@ -1,8 +1,0 @@
-rule "send_sms_arval_garanzia"
-when
-    business_partner == "arval"
-    event == "call_assistance"
-then
-    print("Sending sms for arval for garanzie")
-    set_variable("var", "value")
-end

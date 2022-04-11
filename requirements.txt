@@ -1,0 +1,9 @@
+# Dev
+-e .
+
+# Testing
+pytest
+coverage
+
+# Packaging
+twine

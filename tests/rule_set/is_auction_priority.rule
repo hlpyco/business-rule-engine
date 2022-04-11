@@ -1,7 +1,7 @@
-rule "is_auction_arval_priority"
+rule "is_auction_priority"
 priority 1
 when
-    business_partner == "arval"
+    person == "vip"
     event == "is_auction"
 then
     print("is_auction with priority")

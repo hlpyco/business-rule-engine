@@ -1,0 +1,8 @@
+rule "send_sms_warranty"
+when
+    person == "vip"
+    event == "call_assistance"
+then
+    print("Sending sms for vip for warranty")
+    set_variable("var", "value")
+end

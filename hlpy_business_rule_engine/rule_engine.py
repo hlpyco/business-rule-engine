@@ -1,9 +1,8 @@
 import os
 import logging
-from rule import Rule, RuleParser
+from .rule import Rule, RuleParser
 import re
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
 
 class RuleEngine:

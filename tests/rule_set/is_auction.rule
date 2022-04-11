@@ -1,6 +1,6 @@
-rule "is_auction_arval"
+rule "is_auction"
 when
-    business_partner == "arval"
+    person == "vip"
     event == "is_auction"
 then
     print("is_auction")

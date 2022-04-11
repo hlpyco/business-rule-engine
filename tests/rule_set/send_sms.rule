@@ -1,0 +1,9 @@
+rule "send_sms_incident"
+when
+    person == "vip"
+    event == "call_assistance"
+    car_issue == "INCIDENT"
+then
+    print("Sending sms for for accident")
+    set_variable("run", "incident")
+end
